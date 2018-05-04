@@ -112,13 +112,15 @@ def irradiance(power,diameter,units='mm'):
     return irr
 
 
-#maybe move some of this stuff to a Paraxial Optics module    
-
+# Maybe move some of this stuff to a Paraxial Optics module    
+# Need to clarify some of these functions
+    
 def obj_dist_from_EFL_and_m(f,m):
     """Calculate object distance (z) from focal length (f) and magnification (m)
     """
     obj_dist = -1*((1-m)/m)*f
     return obj_dist
+    # todo: what are the assumptions here?
  
  
 def img_dist_from_EFL_and_m(f,m):
@@ -126,10 +128,11 @@ def img_dist_from_EFL_and_m(f,m):
     """
     img_dist = (1-m)*f
     return img_dist   
+    # todo: what are the assumptions here?
     
     
 def thin_lens_image_dist(obj_dist,efl):
-    """Calculate the image distance given the object distand and efl.  Uses
+    """Calculate the image distance given the object distance and efl.  Uses
     the thin lens equation 1/img + 1/obj = 1/f.  Returns same units.
     
     Parameters
@@ -150,6 +153,7 @@ def thin_lens_image_dist(obj_dist,efl):
     img_dist = 1/(1/efl - 1/obj_dist)
     return img_dist
     #todo: catch infinite case
+    #todo: clarify parameters.  This is the distance in front of the focal pt.
 
     
 def two_lens_EFL(f1,f2,d):
@@ -205,7 +209,6 @@ def thick_lens_EFL(R1,R2,t,n):
     efl = 1.0/phi    
     
     return efl
-    #FIXED: changed to force floating point to correct integer math errors.
     #test1 50,-50,10,1.5 matches Zemax exactly: 51.741
     #todo:  better way to convert units besides writing several if's
 
