@@ -1,12 +1,37 @@
 # -*- coding: utf-8 -*-
 """
-Module for performing common optical calculations
+A module containing a number of functions used for performing common 
+optical calculations
 
 """
 
 import numpy as np
 import scipy.constants as const
 
+
+
+def diff_limited_spot(wavelength, f,D):
+    """Compute the diffraction limited spot size achievable by a lens of 
+    focal length f, wavelength lambda, and collimated input beam diameter D.
+    Units must match, and will return same in units.
+    
+    Parameters
+    ----------
+    wavelength : float
+        The wavelength in microns
+    f : float
+        The focal length of the lens      
+    D: float
+        The diameter of the collimated input beam        
+        
+    Returns
+    -------
+    d: the diffraction limited spot size
+    
+    """  
+    d = (4*wavelength*f)/(np.pi*D)
+    return d
+    
 
 def fnum(efl,diameter):
     """Compute the F-number from the efl and diameter.  Both have to be the 
@@ -76,7 +101,7 @@ def snells_law(n1,n2,theta1):
         measured from the surface normal.
     """
     
-    #need check for within -90 to 90 range, and/or handle it gracefully
+    #need check for within -90 to 90 range, and handle it gracefully
     theta1rad = np.deg2rad(theta1)
     theta2rad = np.arcsin((n1/n2)*np.sin(theta1rad))
     theta2 = np.rad2deg(theta2rad)
@@ -84,7 +109,8 @@ def snells_law(n1,n2,theta1):
 
 
 def braggs_law():
-    """Bragg's Law """
+    """Bragg's Law - unimplemented"""
+    pass
     
 
 def irradiance(power,diameter,units='mm'):
@@ -104,6 +130,7 @@ def irradiance(power,diameter,units='mm'):
     irrad : float
         The irradiance impinging on the surface in W/cm**2
     """
+    
     if units == 'mm':
         d = .1*diameter
         area = np.pi * d
@@ -120,7 +147,7 @@ def obj_dist_from_EFL_and_m(f,m):
     """
     obj_dist = -1*((1-m)/m)*f
     return obj_dist
-    # todo: what are the assumptions here?
+    # todo: clarify assumptions in terms of +/- distances.
  
  
 def img_dist_from_EFL_and_m(f,m):
@@ -128,7 +155,7 @@ def img_dist_from_EFL_and_m(f,m):
     """
     img_dist = (1-m)*f
     return img_dist   
-    # todo: what are the assumptions here?
+    # todo: clarify assumptions in terms of +/- distances.
     
     
 def thin_lens_image_dist(obj_dist,efl):
