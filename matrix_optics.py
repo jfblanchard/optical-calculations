@@ -8,15 +8,13 @@ approximations (sin(a) ~= a), which is valid for angles < ~6 deg (.1 radians).
 The rays and matricies are structued as numpy arrays (fast calculations)
 embedded within a list structure for flexible adding and removing of items.
 
-Python module for performing matrix optics.
-
 In most optical problems, the matrix determinants have a value of one, which
 provides for a convenient check at the end of a calculation.
 
 For now, launch only a marginal and chief ray
 
 Todo: Put in the determinant check.
-Todo: Analyze structure.  Maybe classes instead of functions.
+
 
 """
 
@@ -34,7 +32,6 @@ def optical_ray(y,u):
     ray[1] = u
     
     return ray
-
 
     
 def initialize_system():
@@ -157,11 +154,7 @@ if __name__ == '__main__':
     cum_loc = np.cumsum(location)
     plot_rays(ray_matx,cum_loc)
 
-    for matx in system:
-        ray = propagate_ray(matx,ray)
-
     print('final ray parameters: \n', str(ray_matx))
     
     
-#Need a good way to add distances.
     
