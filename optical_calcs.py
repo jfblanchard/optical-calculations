@@ -138,6 +138,25 @@ def irradiance(power,diameter,units='mm'):
     irr = power/area
     return irr
 
+def newton_wedge_fringe_sep(alpha, wavelength):
+    """Calculate the separation between fringes for an optical flat with angle
+    alpha."""
+    
+    d = wavelength/(2*np.sin(alpha))
+    return d
+
+
+def sag_depth(R,h):
+    """ Calculate sag depth of a shphere at height h.  """
+    
+    if np.abs(h) > np.abs(R):
+        print('height must be less than the raduis')
+        return
+    else:
+        theta = np.arcsin(h/R)
+        sag = R*(1-np.cos(theta))
+        
+    return sag
 
 def abbe_number(nd, nF, nC):
     """ Compute the Abbe number (reciprocal dispersion).  Using the visible F, 

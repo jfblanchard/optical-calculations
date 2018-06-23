@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>776</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="palette">
@@ -81,10 +81,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>9</x>
+      <x>10</x>
       <y>10</y>
-      <width>891</width>
-      <height>331</height>
+      <width>670</width>
+      <height>260</height>
      </rect>
     </property>
     <property name="title">
@@ -97,13 +97,19 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
-     <height>23</height>
+     <width>800</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="DockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="palette">
     <palette>
      <active>
@@ -185,6 +191,9 @@
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
@@ -194,6 +203,15 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Refract</string>
         </property>
