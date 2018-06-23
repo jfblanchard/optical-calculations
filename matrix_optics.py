@@ -43,7 +43,8 @@ def initialize_system():
     start_rays = []  
     start_rays.append(optical_ray(0,.1))   #chief and marginal rays
     start_rays.append(optical_ray(.1,0))
-    for i in range(10):
+    
+    for i in range(10):  #make a ray fan
         start_rays.append(optical_ray(0.0,i/10.0 - .5))
     
     #initialize system list 
@@ -117,6 +118,7 @@ def update_system(start_rays,system):
             ray_matrix[i][j+1] = np.dot(system[j], ray_matrix[i][j])
     
     return ray_matrix
+
 
 def plot_rays(ray_matx, loc):
     

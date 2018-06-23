@@ -139,7 +139,23 @@ def irradiance(power,diameter,units='mm'):
     return irr
 
 
-# Maybe move some of this stuff to a Paraxial Optics module    
+def abbe_number(nd, nF, nC):
+    """ Compute the Abbe number (reciprocal dispersion).  Using the visible F, 
+    d, and C lines:
+        F(H):  486.1 nm
+        d(He): 587.6 nm
+        C(H):  656.3 nm
+        
+    nd, nF, and nC are the refractive indicies at each of these three lines.
+    
+    Todo: Alternately, select a glass type and compute these three n's.
+    
+    """
+    V = (nd - 1)/(nF - nC)
+    return V
+
+
+# Maybe move some of this stuff to a Paraxial Optics module -------------------   
 # Need to clarify some of these functions
     
 def obj_dist_from_EFL_and_m(f,m):
@@ -257,4 +273,5 @@ def thin_prism_deviation(angle, n):
     """  
     d = -1*(n-1)*angle
     return d
+
 
