@@ -1,12 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-Parse the ohara downloaded catalog (csv format).
-version 20171130
+Parse the ohara downloaded catalog (csv format), and create a new cleaned up
+data frame with glass type and sellmeier coeffs for all glass types.  Output 
+in csv and pickled formats
+
+Ohara download version 20171130
+
+Hover code found here: 
+https://stackoverflow.com/questions/7908636/
+possible-to-make-labels-appear-when-hovering-over-a-point-in-matplotlib
+
 """
 
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 #ohara has 140 glasses
@@ -15,46 +25,88 @@ df = pd.read_csv('OHARA_20171130_6.csv', header=[0, 1])
 #glass names are in column 1
 glass = df[df.columns[1]].values
 for i in range(len(glass)):
-    glass[i] = glass[i].replace(" ","")  #make consitanct with no spaces
+    glass[i] = glass[i].replace(" ","")  #make consitent with no spaces
          
           
-#indicies in column 6
-n = df[df.columns[16]].values
-      
-#sellmeier coefficients are 60-65.  Store all in arrays
-#A1_coeffs = df[df.columns[60]].values
-#A2_coeffs = df[df.columns[61]].values
-#A3_coeffs = df[df.columns[62]].values
-#B1_coeffs = df[df.columns[63]].values
-#B2_coeffs = df[df.columns[64]].values
-#B3_coeffs = df[df.columns[65]].values
+#Index at sodium d-line (Nd) is in column 16
+nd = df[df.columns[16]].values
 
-       
-#grab values for a specific glass type (say S-BSL7)
-def get_glass_sellmeier_coeffs(glass_type):
-    """ Get sellmeier coefficients based on glass types  """
-    
-    idx = np.where(glass==glass_type)
-    A1 = df[df.columns[60]].values[idx]  #convert to float instead of ndarray?
-    A2 = df[df.columns[61]].values[idx]
-    A3 = df[df.columns[62]].values[idx]
-    B1 = df[df.columns[63]].values[idx]
-    B2 = df[df.columns[64]].values[idx]
-    B3 = df[df.columns[65]].values[idx]
-           
-    return A1, A2, A3, B1, B2, B3
-    
+columns = ['Nd', 'A1', 'A2', 'A3', 'B1', 'B2', 'B3']
 
-
-# next, restructure the data frame
+# Create a new data frame with just the glass type, Nd, and sellmeiers.
+# Todo: maybe add other properties. 
 # best format - pickled df, json, hdf5, yml?
-                            
-  
+
+df_sell = pd.DataFrame(index=glass,columns=columns)
+
+df_sell = df_sell.fillna(0)
+abbe = df[df.columns[26]].values
+A1 = df[df.columns[60]].values
+A2 = df[df.columns[61]].values
+A3 = df[df.columns[62]].values
+B1 = df[df.columns[63]].values
+B2 = df[df.columns[64]].values
+B3 = df[df.columns[65]].values
+       
+   
+df_sell['Glass'] = glass
+df_sell['Abbe'] = abbe      
+df_sell['Nd'] = nd
+df_sell['A1'] = A1
+df_sell['A2'] = A2
+df_sell['A3'] = A3
+df_sell['B1'] = B1
+df_sell['B2'] = B2
+df_sell['B3'] = B3       
+        
+
+#plot 
+fig,ax = plt.subplots()
+plt.title('Index vs. Abbe Number for Ohara Glass')
+plt.ylabel('Refractive Index (Nd)')
+plt.xlabel('Abbe Number')
+plt.gca().invert_xaxis()
+
+sc = plt.scatter(abbe, nd)
+                 
+annot = ax.annotate("", xy=(0,0), xytext=(10,10),textcoords="offset points",
+                    bbox=dict(boxstyle="round", fc="w"),
+                    arrowprops=dict(arrowstyle="->"))
+annot.set_visible(False)
+
+def update_annot(ind):
+
+    pos = sc.get_offsets()[ind["ind"][0]]
+    annot.xy = pos
+    text = "{}, {}".format(" ".join([glass[n] for n in ind["ind"]]), 
+                           " ".join(str([nd[n] for n in ind["ind"]])))
+    annot.set_text(text)
+    #annot.get_bbox_patch().set_facecolor(cmap(norm(c[ind["ind"][0]])))
+    annot.get_bbox_patch().set_alpha(0.4)
+
+
+def hover(event):
+    vis = annot.get_visible()
+    if event.inaxes == ax:
+        cont, ind = sc.contains(event)
+        if cont:
+            update_annot(ind)
+            annot.set_visible(True)
+            fig.canvas.draw_idle()
+        else:
+            if vis:
+                annot.set_visible(False)
+                fig.canvas.draw_idle()
+
+fig.canvas.mpl_connect("motion_notify_event", hover)
+     
+
+#later add schott glasses too 
 #schottdf = pd.read_csv('schott-optical-glass-06032017.csv')  #utf-8 error
 
 
 
-# index, glass types
+# Reference:  index, glass types
 
 #0 S-FPL51
 #1 S-FPL53
@@ -198,7 +250,7 @@ def get_glass_sellmeier_coeffs(glass_type):
 #139 S-NPH53             
                        
                                          
-# Parsed columns below for reference ------------------------------------------                       
+# Parsed raw columns from csv ------------------------------------------                       
                        
 #0 ('Unnamed: 0_level_0', 'Unnamed: 0_level_1')
 #1 ('Unnamed: 1_level_0', 'Glass ')
