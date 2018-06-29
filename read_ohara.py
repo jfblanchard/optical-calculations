@@ -2,24 +2,24 @@
 """
 Parse the ohara downloaded catalog (csv format), and create a new cleaned up
 data frame with glass type and sellmeier coeffs for all glass types.  Output 
-in csv and pickled formats
+in json format.
 
 Ohara download version 20171130
 
-Hover code found here: 
+Credits: Hover text snippet found here: 
 https://stackoverflow.com/questions/7908636/
 possible-to-make-labels-appear-when-hovering-over-a-point-in-matplotlib
 
 """
 
-
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-#ohara has 140 glasses
+#ohara has 140 glasses in 20171130 version
 df = pd.read_csv('OHARA_20171130_6.csv', header=[0, 1])
 
 #glass names are in column 1
@@ -61,14 +61,16 @@ df_sell['B3'] = B3
         
 
 #plot 
+sns.set_style(style='whitegrid')
 fig,ax = plt.subplots()
 plt.title('Index vs. Abbe Number for Ohara Glass')
 plt.ylabel('Refractive Index (Nd)')
 plt.xlabel('Abbe Number')
 plt.gca().invert_xaxis()
-
 sc = plt.scatter(abbe, nd)
-                 
+
+
+#annotations               
 annot = ax.annotate("", xy=(0,0), xytext=(10,10),textcoords="offset points",
                     bbox=dict(boxstyle="round", fc="w"),
                     arrowprops=dict(arrowstyle="->"))
@@ -98,8 +100,15 @@ def hover(event):
                 annot.set_visible(False)
                 fig.canvas.draw_idle()
 
+#connect the hover function and show the plot
 fig.canvas.mpl_connect("motion_notify_event", hover)
-     
+plt.show()
+
+#save the data frame as json and pickle
+path = os.getcwd()
+df_sell.to_json(path + '/ohara_glasses.json')
+pd.to_pickle(df_sell, path + '/ohara_glasses.pkl')
+
 
 #later add schott glasses too 
 #schottdf = pd.read_csv('schott-optical-glass-06032017.csv')  #utf-8 error
