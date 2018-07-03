@@ -36,13 +36,27 @@ in json and binary (pickled)formats.
 Also prints out an interactive plot of the glass types.  Glass name and index are
 displayed when hovered over with the cursor.
 
-Screenshot:
-
 
 ![Ohara Glass map](/images/ohara_glass_map.png)
 
 
 * Currently uses Ohara file version 20171130
+* Todo: Add Schott catalog
+
+<h3>zernike.py</h3>
+
+Plot Zernike polynomials.  Indexing uses the OSA/ANSI single index scheme.  Can plot the first 14 modes.
+
+Some example screenshots below:
+
+![Horizontal Tilt](/images/horiz_tilt.png)
+![Defocus](/images/defocus.png)
+![Horizontal Coma](/images/horiz_coma.png)
+![Vertical Astigmatism](/images/vert_astigmatism.png)
+![Oblique Trefoil](/images/oblique_trefoil.png)
+![Vertical Quadrafoil](/images/vert_quadrafoil.png)
+
+
 
 
 
