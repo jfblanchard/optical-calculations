@@ -6,9 +6,12 @@ optical calculations
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 import scipy.constants as const
+import seaborn as sns
 
 
+sns.set_style('whitegrid')
 
 def diff_limited_spot(wavelength, f,D):
     """Compute the diffraction limited spot size achievable by a lens of 
@@ -106,6 +109,26 @@ def snells_law(n1,n2,theta1):
     theta2rad = np.arcsin((n1/n2)*np.sin(theta1rad))
     theta2 = np.rad2deg(theta2rad)
     return theta2
+
+
+def fresnel_refl(n1,n2,theta_i):
+    """ Compute the fresnel reflections at a dielectric surface with incident
+    index n1, and entering index n2, with incident angle theta_i (in radians).  
+    Returns both the S and P polarized reflections. 
+    """
+    sterm1 = n1 * np.cos(theta_i)
+    sterm2 = n2*np.sqrt(1 - ((n1/n2)*np.sin(theta_i))**2)
+    Rs = ((sterm1 - sterm2)/(sterm1 + sterm2))**2
+    
+    pterm1 = n2*np.cos(theta_i)
+    pterm2 = n1*np.sqrt(1 - ((n1/n2)*np.sin(theta_i))**2)
+    Rp = ((pterm2 - pterm1)/(pterm2 + pterm1))**2
+    
+    #tested with 0 deg incidence, correct at 4% Reflection
+    #T = 1 - R
+    
+    return Rs,Rp
+
 
 
 def braggs_law():
@@ -294,3 +317,19 @@ def thin_prism_deviation(angle, n):
     return d
 
 
+if __name__ == "__main__":
+    #test some functions here
+    
+    #test fresnel
+    theta = np.linspace(0,np.pi/2,100)
+    Rs,Rp = fresnel_refl(1,1.5,theta)
+    
+    plt.figure()
+    plt.plot(np.rad2deg(theta),Rs, label = 'Rs')
+    plt.plot(np.rad2deg(theta),Rp, label = 'Rp')
+    plt.title('Fresenel Reflection vs. Angle of incidence')
+    plt.xlabel('Angle (deg)')
+    plt.ylabel('Reflection')
+    plt.legend()
+    plt.show()                                       
+    
