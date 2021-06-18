@@ -193,7 +193,7 @@ if __name__ == '__main__':
     #system.append(xfer_free_space(1))  #propagate another 1m
     l1 = thin_lens_matrix(.5)  #500mm thin lens
     system.matricies.append(l1)
-    system.locations.append(0)
+    system.locations.append(0)   #todo: auto append location when adding a matrix
     
     d2 = xfer_free_space(1)  #propagate 1m
     system.matricies.append(d2)
