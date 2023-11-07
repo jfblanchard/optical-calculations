@@ -8,7 +8,7 @@ Module Functions
 2. Determine F-number from EFL and aperture diameter.
 3. Calculate half angle from NA (numerical aperture).
 4. Snells law to compute angle of refraction.
-5. Irradiance in W/cm^2
+5. Irradiance in W/cm<sup>2</sup>
 6. Paraxial Optical Computations, which include:
 - Object and Image distance calculations given EFL and magnification
 - Thin lens image distance
@@ -35,7 +35,6 @@ in json and binary (pickled)formats.
 
 Also prints out an interactive plot of the glass types.  Glass name and index are
 displayed when hovered over with the cursor.
-
 
 ![Ohara Glass map](/images/ohara_glass_map.png)
 
