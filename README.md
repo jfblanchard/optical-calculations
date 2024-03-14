@@ -1,4 +1,4 @@
-# optical-tools
+# optical-scripts
 Set of functions for performing common optical computations.  Module descriptions below.
 
 <h3>Optical_calcs.py</h3>
